@@ -29,13 +29,55 @@ model Teacher {
 }
 
 model Papers {
-  id        String   @unique @default(uuid())
-  branch    String
-  teacherId String?
-  Teacher   Teacher? @relation(fields: [teacherId], references: [id])
-  // questions 
+  id         String      @unique @default(uuid())
+  teacherId  String?
+  Teacher    Teacher?    @relation(fields: [teacherId], references: [id])
+  questions  Questions[]
+  year       Year        @relation(fields: [yearId], references: [id])
+  yearId     String
+  branch     Branch      @relation(fields: [branchId], references: [id])
+  branchId   Int
+  subject    Subject     @relation(fields: [subjectId], references: [id])
+  subjectId  Int
+  examType   ExamType    @relation(fields: [examTypeId], references: [id])
+  examTypeId Int
+  marks      Marks       @relation(fields: [marksId], references: [id])
+  marksId    Int
 }
 
 model Questions {
-  id String @unique @default(uuid())
+  id         String @unique @default(uuid())
+  text       String
+  additional String
+  paperId    String
+  paper      Papers @relation(fields: [paperId], references: [id])
+}
+
+model Year {
+  id     String   @unique @default(uuid())
+  year   Int
+  papers Papers[]
+}
+
+model Branch {
+  id     Int      @unique @default(autoincrement())
+  Branch String
+  papers Papers[]
+}
+
+model Subject {
+  id          Int      @unique @default(autoincrement())
+  SubjectName String
+  papers      Papers[]
+}
+
+model ExamType {
+  id     Int      @unique @default(autoincrement())
+  papers Papers[]
+}
+
+model Marks {
+  id     Int      @unique @default(autoincrement())
+  Marks  Int
+  papers Papers[]
 }
